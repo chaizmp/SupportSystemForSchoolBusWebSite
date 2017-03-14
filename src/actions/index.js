@@ -10,6 +10,7 @@ export const FETCH_BUS = 'FETCH_BUS';
 export const FETCH_ROUTE = 'FETCH_ROUTE';
 export const FETCH_BUSES = 'FETCH_BUSES';
 export const CLICK_BUS = 'CLICK_BUS';
+export const FETCH_PASSENGERS = 'FETCH_PASSENGERS';
 
 export function fetchStudents(id){
     var querystring = require('querystring');
@@ -79,5 +80,14 @@ export function clickBus(index){
     return {
         type: CLICK_BUS,
         payload: index
+    };
+}
+
+export function fetchAllPassenger(id){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getAllPassengerInformation`,querystring.stringify({ carId: id }));
+    return {
+        type: FETCH_PASSENGERS,
+        payload: request
     };
 }

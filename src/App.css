@@ -8,16 +8,23 @@
 }
 
 .App-header {
-  background-color: #126;
-  height: 150px;
+  height: 80px;
   padding: 20px;
-  color: white;
+  color: antiquewhite;
+  background-color: black;
 }
 
 .App-intro {
   font-size: large;
 }
 
+body{
+  background-color: lightgrey;
+}
+
+ul {
+  list-style-type: none;
+}
 /*@keyframes App-logo-spin {*/
   /*from { transform: rotate(0deg); }*/
   /*to { transform: rotate(360deg); }*/

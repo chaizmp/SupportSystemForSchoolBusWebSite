@@ -1,4 +1,4 @@
-import { FETCH_BUS, FETCH_BUSES, CLICK_BUS } from '../actions/index';
+import { FETCH_BUS, FETCH_BUSES, CLICK_BUS, FETCH_PASSENGERS } from '../actions/index';
 
 const INITIAL_STATE = { bus: null, buses: null, busId: null};
 
@@ -10,6 +10,8 @@ export default function(state = INITIAL_STATE, action){
             return { ...state, buses:action.payload.data};
         case CLICK_BUS:
             return { ...state, busId:action.payload};
+        case FETCH_PASSENGERS:
+            return { ...state, teachers:action.payload.data.teachers, students:action.payload.data.students, driver:action.payload.data.driver};
         default:
             return state;
     }

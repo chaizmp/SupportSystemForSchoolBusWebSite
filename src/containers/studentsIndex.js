@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 class StudentsIndex extends Component {
     componentWillMount() {
-        this.props.fetchStudents(125)
+        this.props.fetchStudents(10)
             .then( ()=> {
                 console.log(this.props.students);
             });
@@ -14,22 +14,20 @@ class StudentsIndex extends Component {
     renderStudents()  {
         return this.props.students.map( (student) => {
             return (
-            <li key={student.id}>
-                <Link to={"/student/"+student.id}>
-                    {student.firstName}
-                </Link>
-            </li>);
+            <div key={student.id}>
+                <Link style={{textDecoration:'none'}}to={"/student/"+student.id}>
+                    {student.firstName} {student.surName}
+                </Link> 
+            </div> );
         });
     }
 
     render() {
         return (
-            <div>
+            <div style={{textAlign: 'center'}}>
                 <h3> All Students</h3>
-                <ul>
-                    {this.renderStudents()}
-                </ul>
-                <Link to="/allBus"> All Bus </Link>
+                    {this.renderStudents()} 
+                <br/><button><Link style={{textDecoration:'none'}} to="/allBus">&nbsp; All Bus &nbsp;</Link></button>
             </div>
         );
     }

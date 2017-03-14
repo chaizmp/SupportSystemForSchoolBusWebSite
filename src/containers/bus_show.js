@@ -19,9 +19,7 @@ class ShowBus extends  Component{
         return (
             <div>
                 <h3> Bus </h3>
-                <ul>
-                    <li>Car Number : {bus.carNumber}</li>
-                </ul>
+                    Car Number: {bus.carNumber}
             </div>
         );
     }
@@ -30,10 +28,8 @@ class ShowBus extends  Component{
         return (
             <div>
                 <h3> Driver </h3>
-                <ul>
-                    <li>First Name : {driver.firstName}</li>
-                    <li>Surname : {driver.surName}</li>
-                </ul>
+                    Name: {driver.firstName}&nbsp;{driver.surName} <br/>
+                    Tel: {driver.tel} <br/>
             </div>
         );
     }
@@ -43,10 +39,8 @@ class ShowBus extends  Component{
             return (
                 <div key={teacher.id}>
                     <h3> Teacher </h3>
-                    <ul>
-                        <li>First Name : {teacher.firstName}</li>
-                        <li>Surname : {teacher.surName}</li>
-                    </ul>
+                        Name: {teacher.firstName}&nbsp;{teacher.surName} <br/>
+                        Tel: {teacher.tel} <br/>
                 </div>
             );
         });
@@ -64,14 +58,11 @@ class ShowBus extends  Component{
         var { route } = this.props;
         var length = route.length;
         return (
-            <div>
-                <h3> Maps </h3>
                 <GoogleMapCom
                     route={this.makeLatLngArray()}
-                    lon={route[(length-1)/2]['longitude']}
-                    lat={route[(length-1)/2]['latitude']}/>
+                    lon={route[Math.floor((length-1)/2)]['longitude']}
+                    lat={route[Math.floor((length-1)/2)]['latitude']}/>
 
-            </div>
         );
         // return (
         //     <div>
@@ -88,25 +79,26 @@ class ShowBus extends  Component{
         {
             const {bus, driver, teachers} = this.props.aboutBus;
             return (
-                <div>
+                    <div>
+                    <table>
                     <tr>
-                        <th>Detail</th>
-                        <th>Maps</th>
+                        <th><h3>Bus Detail</h3></th>
+                        <th><h3>Maps</h3></th>
                     </tr>
                     <tr>
-                        <td>
-                            <h2>About Bus</h2>
+                        <td style={{textAlign: 'center', width:'500px'}}>
                             {this.renderBus(bus)}
                             {this.renderDriver(driver)}
                             {this.renderTeachers(teachers)}
                         </td>
-                        <td>
-                            {this.renderGoogleMaps()}
-                        </td>
-                    </tr>
-                    <Link to={'/student/'+this.props.params.id}>Back to Student Detail</Link><br/>
-                    <Link to="/">Back to Index</Link>
-                </div>
+                         <td style={{textAlign: 'center', width: '1000px'}}>
+                             {this.renderGoogleMaps()}
+                         </td>  
+                    </tr>  
+                    </table>    
+                    <br/><button><Link style={{textDecoration:'none'}} to={'/student/'+this.props.params.id}>&nbsp;Back to Student Detail&nbsp;</Link></button>&nbsp;
+                    <button><Link style={{textDecoration:'none'}} to="/">&nbsp;Back to Index&nbsp;</Link></button>
+                    </div>
             );
         }
     }

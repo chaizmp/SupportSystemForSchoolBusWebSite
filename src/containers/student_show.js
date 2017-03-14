@@ -23,11 +23,8 @@ class StudentShow extends Component {
         return this.props.teachers.map( (teacher) => {
             return (
                 <div key={teacher.id}>
-                    <ul>
-                        <li>First Name : {teacher.firstName}</li>
-                        <li>Surname : {teacher.surName} </li>
-                        <li>Tel : {teacher.tel} </li>
-                    </ul>
+                Name: {teacher.firstName}&nbsp;{teacher.surName} <br/>
+                        Tel: {teacher.tel} <br/>
                 </div>
             );
         })
@@ -37,11 +34,8 @@ class StudentShow extends Component {
         return this.props.parents.map( (parent) => {
             return (
                 <div  key={parent.id}>
-                    <ul>
-                        <li>First Name : {parent.firstName}</li>
-                        <li>Surname : {parent.surName} </li>
-                        <li>Tel : {parent.tel} </li>
-                    </ul>
+                        Name: {parent.firstName}&nbsp;{parent.surName} <br/>
+                        Tel: {parent.tel} <br/>
                 </div>
             );
         })
@@ -56,18 +50,16 @@ class StudentShow extends Component {
 
             <div>
                 <h3>Student</h3>
-                <ul>
-                    <li>First Name : {student.firstName}</li>
-                    <li>Surname : {student.surName}</li>
-                    <li>Type of Service : {student.typeOfService}</li>
-                    <li>Status : {student.inBus ? "On Bus" : "Left"} </li>
-                </ul>
-                <Link to={"/aboutBus/"+this.props.params.id} > About Bus </Link>
+                    Name: {student.firstName}&nbsp;{student.surName}<br/>
+                    Tel: {student.tel}<br/>
+                    Type of Service: {student.typeOfService}<br/>
+                    Status: {student.inBus === 'YES' ? "On Bus" : "Left"} <br/>
                 <h3>Parent</h3>
                     {this.renderParents()}
                 <h3>Teacher</h3>
                     {this.renderTeachers()}
-                <Link to="/">Back</Link>
+                <br/><button><Link style={{ textDecoration:'none'}} to={"/aboutBus/"+this.props.params.id} > About Bus </Link> </button><br/><br/>
+                <button><Link  style={{textDecoration:'none'}} to="/">Back</Link></button> 
             </div>
         );
     }
