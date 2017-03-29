@@ -59,7 +59,7 @@ class StudentShow extends Component {
                 <h3>Teacher</h3>
                     {this.renderTeachers()}
                 <br/><button><Link style={{ textDecoration:'none'}} to={"/aboutBus/"+this.props.params.id} > About Bus </Link> </button><br/><br/>
-                <button><Link  style={{textDecoration:'none'}} to="/">Back</Link></button> 
+                <button><Link  style={{textDecoration:'none'}} to="/index">Back</Link></button> 
             </div>
         );
     }

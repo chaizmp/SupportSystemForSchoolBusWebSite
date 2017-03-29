@@ -11,10 +11,16 @@ export const FETCH_ROUTE = 'FETCH_ROUTE';
 export const FETCH_BUSES = 'FETCH_BUSES';
 export const CLICK_BUS = 'CLICK_BUS';
 export const FETCH_PASSENGERS = 'FETCH_PASSENGERS';
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_UP = 'SIGN_UP';
+export const ADD_RELATIONSHIP = 'ADD_RELATIONSHIP';
+export const FETCH_ALL_TEACHERS = 'FETCH_ALL_TEACHERS';
+export const FETCH_ALL_PARENTS = 'FETCH_ALL_PARENTS';
+export const FETCH_ALL_STUDENTS = 'FETCH_ALL_STUDENTS';
 
 export function fetchStudents(id){
     var querystring = require('querystring');
-    const request = axios.post(`${ROOT_URL}/getAllStudentInformation`,querystring.stringify({ personId: id }));
+    const request = axios.post(`${ROOT_URL}/getAllStudentInformation`,querystring.stringify({ personId: id, needImage: false }));
 
     return {
         type: FETCH_STUDENTS,
@@ -85,9 +91,98 @@ export function clickBus(index){
 
 export function fetchAllPassenger(id){
     var querystring = require('querystring');
-    const request = axios.post(`${ROOT_URL}/getAllPassengerInformation`,querystring.stringify({ carId: id }));
+    const request = axios.post(`${ROOT_URL}/getAllPassengerInformation`,querystring.stringify({ carId: id, needImage: false }));
     return {
         type: FETCH_PASSENGERS,
+        payload: request
+    };
+}
+
+export function signIn(props) {
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/signIn`, querystring.stringify({ username: props.username, password: props.password }));
+
+    return {
+      type: SIGN_IN,
+      payload: request
+    };
+}
+
+export function signUp(props) {
+    let querystring = require('querystring');
+    let path = props.role !== 'STUDENT'? 'signUp': 'addStudent';
+    const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
+        {
+            username: props.username,
+            password: props.password,
+            role: props.role,
+            name: props.name,
+            surname: props.surname,
+            tel: props.tel,
+            typeOfService: !!props.typeOfService? props.typeOfService:'',
+            studentId: !!props.studentId? props.studentId:''
+        }
+        ));
+    return {
+        type: SIGN_UP,
+        payload: request
+    };
+}
+
+export function addRelationship(props) {
+    console.log(props);
+    var querystring = require('querystring');
+    var path = props.ro === 'TEACHER' ? 'addTeacherAndStudentRelationships': 'addParentAndStudentRelationships';
+    const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify({
+        personPId: !!props.personPId? props.personPId:'',
+        personTId: !!props.personTId? props.personTId:'',
+        personSIds: props.personSIds,
+        classRoomName: !!props.classroomName? props.classroomName:''
+    }));
+
+
+    console.log({
+        personPId: !!props.personPId? props.personPId:'',
+        personTId: !!props.personTId? props.personTId:'',
+        personSIds: props.personSIds,
+        classRoomName: !!props.classroomName? props.classroomName:''
+    });
+
+    return {
+        type: ADD_RELATIONSHIP,
+        payload: request
+    };
+}
+
+export function fetchAllTeachers(){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getAllTeachers`);
+
+    return {
+        type: FETCH_ALL_TEACHERS,
+        payload: request
+    };
+}
+
+export function fetchAllParents(){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getAllParents`);
+
+    return {
+        type: FETCH_ALL_PARENTS,
+        payload: request
+    };
+}
+
+export function fetchAllStudents(){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getAllStudentInformation`,querystring.stringify({
+        personId: '16',
+        needImage: 'false'
+    }));
+
+    return {
+        type: FETCH_ALL_STUDENTS,
         payload: request
     };
 }

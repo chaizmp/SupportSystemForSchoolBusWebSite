@@ -95,11 +95,13 @@ class AllBusShow extends Component {
                                 allBusPositions={route}
                                 lat={cenlat}
                                 lon={cenlon}
-                            />    
+                                height= '500px'
+                                width = '1000px'
+                            />
                         </td>
                     </tr>        
                 </table>
-                <button><Link style={{textDecoration:'none'}} to="/">Back to Index</Link></button> <br/>
+                <button><Link style={{textDecoration:'none'}} to="/index">Back to Index</Link></button> <br/>
                 </div>
             );
         }
@@ -110,6 +112,8 @@ function mapStateToProps (state) {
     return { buses:state.aboutBus.buses, busId:state.aboutBus.busId, teachers:state.aboutBus.teachers,
         students:state.aboutBus.students, driver:state.aboutBus.driver };
 }
+
+
 
 export default connect(mapStateToProps,{ fetchAllBus })(AllBusShow);
 

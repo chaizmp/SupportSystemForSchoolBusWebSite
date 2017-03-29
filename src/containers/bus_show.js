@@ -59,6 +59,8 @@ class ShowBus extends  Component{
         var length = route.length;
         return (
                 <GoogleMapCom
+                    width = {1000}
+                    height = {500}
                     route={this.makeLatLngArray()}
                     lon={route[Math.floor((length-1)/2)]['longitude']}
                     lat={route[Math.floor((length-1)/2)]['latitude']}/>
@@ -97,7 +99,7 @@ class ShowBus extends  Component{
                     </tr>  
                     </table>    
                     <br/><button><Link style={{textDecoration:'none'}} to={'/student/'+this.props.params.id}>&nbsp;Back to Student Detail&nbsp;</Link></button>&nbsp;
-                    <button><Link style={{textDecoration:'none'}} to="/">&nbsp;Back to Index&nbsp;</Link></button>
+                    <button><Link style={{textDecoration:'none'}} to="/index">&nbsp;Back to Index&nbsp;</Link></button>
                     </div>
             );
         }
