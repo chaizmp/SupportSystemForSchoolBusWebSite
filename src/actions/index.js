@@ -17,6 +17,10 @@ export const ADD_RELATIONSHIP = 'ADD_RELATIONSHIP';
 export const FETCH_ALL_TEACHERS = 'FETCH_ALL_TEACHERS';
 export const FETCH_ALL_PARENTS = 'FETCH_ALL_PARENTS';
 export const FETCH_ALL_STUDENTS = 'FETCH_ALL_STUDENTS';
+export const FETCH_PERSON = 'FETCH_PERSON';
+export const FETCH_STUDENTS_BY_PERSON = 'FETCH_STUDENTS_BY_PERSON';
+export const FETCH_PERSONS = 'FETCH_PERSONS';
+export const DELETE_PERSON = 'DELETE_PERSON';
 
 export function fetchStudents(id){
     var querystring = require('querystring');
@@ -29,7 +33,7 @@ export function fetchStudents(id){
 }
 export function fetchStudent(id){
     var querystring = require('querystring');
-    const request = axios.post(`${ROOT_URL}/getStudentInformation`,querystring.stringify({ personId: id }));
+    const request = axios.post(`${ROOT_URL}/getStudentInformationWeb`,querystring.stringify({ personId: id }));
     return {
         type: FETCH_STUDENT,
         payload: request
@@ -111,8 +115,16 @@ export function signIn(props) {
 export function signUp(props) {
     let querystring = require('querystring');
     let path = props.role !== 'STUDENT'? 'signUp': 'addStudent';
-    const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
-        {
+    console.log(props);
+
+    var reader = new FileReader();
+    var imgResult;
+    reader.readAsDataURL(props.img[0]);
+    return reader.onload = function () {
+        console.log(reader.result);
+        imgResult = reader.result.substring(reader.result.indexOf(",") + 1);
+
+        let queryParam = {
             username: props.username,
             password: props.password,
             role: props.role,
@@ -120,13 +132,21 @@ export function signUp(props) {
             surname: props.surname,
             tel: props.tel,
             typeOfService: !!props.typeOfService? props.typeOfService:'',
-            studentId: !!props.studentId? props.studentId:''
+            studentId: !!props.studentId? props.studentId:'',
+            image: imgResult,
+            details: props.detail
         }
+        const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
+            queryParam
         ));
-    return {
-        type: SIGN_UP,
-        payload: request
-    };
+        console.log(queryParam);
+        return {
+            type: SIGN_UP,
+            payload: request
+        };
+
+    }
+
 }
 
 export function addRelationship(props) {
@@ -183,6 +203,41 @@ export function fetchAllStudents(){
 
     return {
         type: FETCH_ALL_STUDENTS,
+        payload: request
+    };
+}
+
+export function fetchPerson(id){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getPerson`,querystring.stringify({ personId: id }));
+    return {
+        type: FETCH_PERSON,
+        payload: request
+    };
+}
+
+export function fetchStudentsByPerson(id){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getStudentsByTeacherOrParent`,querystring.stringify({ personId: id }));
+    return {
+        type: FETCH_STUDENTS_BY_PERSON,
+        payload: request
+    };
+}
+
+export function fetchPersons(){
+    const request = axios.post(`${ROOT_URL}/getPersons`);
+    return {
+        type: FETCH_PERSONS,
+        payload: request
+    };
+}
+
+export function deletePerson(id){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/deletePerson`,querystring.stringify({ personId: id}));
+    return {
+        type: DELETE_PERSON,
         payload: request
     };
 }

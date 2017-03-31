@@ -18,8 +18,12 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
+    "babel-preset-stage-1": "^6.1.18",
+    "lodash": "^3.10.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-dropzone": "^3.12.2",
     "react-google-maps": "^4.7.1",
     "react-redux": "^4.0.0",
     "react-router": "^2.0.1",
@@ -27,10 +31,7 @@
     "redux": "^3.0.4",
     "redux-form": "^4.1.3",
     "redux-promise": "^0.5.3",
-    "sparkline": "^0.1.2",
-    "axios": "^0.15.3",
-    "babel-preset-stage-1": "^6.1.18",
-    "lodash": "^3.10.1"
+    "sparkline": "^0.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

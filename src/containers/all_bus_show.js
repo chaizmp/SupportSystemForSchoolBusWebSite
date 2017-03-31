@@ -18,7 +18,7 @@ class AllBusShow extends Component {
         let cenlon = 0;
         let use = 0;
         this.props.buses.map( (bus,i)=>{
-            if(bus.currentLatitude !== 200 && bus.crruentLongitude !== 200){
+            if(bus.currentLatitude !== 200 && bus.currentLongitude !== 200){
             positions.push( { carId:bus.carId, carNumber:bus.carNumber, id:i ,lat:bus.currentLatitude, lng:bus.currentLongitude});
             cenlat += bus.currentLatitude;
             cenlon += bus.currentLongitude;
@@ -28,6 +28,9 @@ class AllBusShow extends Component {
         if(use === 0){
             use++;
         }
+          console.log(cenlat, cenlon);
+          console.log(use)
+        console.log(cenlat/use, cenlon/use);
         return { route:positions, cenlat: cenlat/use, cenlon: cenlon/use };
     }
 
@@ -35,9 +38,10 @@ class AllBusShow extends Component {
         return (
             <div>
                 <h3> Driver </h3>
-                    Name: {driver.firstName}&nbsp;{driver.surName} <br/>
-                    Tel: {driver.tel} <br/>
-                    
+                Name : <Link style={{textDecoration: 'none'}} to={"/person/" + driver.id}>
+                    {driver.firstName} {driver.surName}
+                </Link> <br/>
+                Tel: {driver.tel}
             </div>
         );
     }
@@ -47,8 +51,10 @@ class AllBusShow extends Component {
             return (
                 <div key={teacher.id}>
                     <h3> Teacher </h3>
-                        Name: {teacher.firstName}&nbsp;{teacher.surName} <br/>
-                        Tel: {teacher.tel} <br/>
+                    Name : <Link style={{textDecoration: 'none'}} to={"/person/" + teacher.id}>
+                    {teacher.firstName} {teacher.surName}
+                </Link> <br/>
+                    Tel: {teacher.tel}
                 </div>
             );
         });
@@ -58,8 +64,12 @@ class AllBusShow extends Component {
         return students.map( (student) => {
             return (
             <div key={student.id}>
-                        Name: {student.firstName}&nbsp;{student.surName} <br/>
-                        Tel: {student.tel} <br/>
+                Name : <Link style={{textDecoration: 'none'}} to={"/student/" + student.id}>
+                {student.firstName} {student.surName}
+            </Link> <br/>
+                Tel: {student.tel} <br/>
+                Status: {student.inBus}
+                <br/><br/>
                 </div>
             );
         });
@@ -71,6 +81,8 @@ class AllBusShow extends Component {
         }
         else {
             let {route, cenlat, cenlon} = this.getBusPositions();
+            console.log("CHECK !");
+            console.log(cenlat, cenlon);
             return (
                 <div>
                 <table>
@@ -82,15 +94,13 @@ class AllBusShow extends Component {
                     <tr>
                         <td style={{ width:'500px'}}>
                                 {this.props.busId !== null? 'Car Number: '+this.props.buses[this.props.busId]['carNumber'] : ''} <br/>
-                                
-                                {this.props.busId !== null? 'Latitude: '+this.props.buses[this.props.busId]['currentLatitude'] : ''} <br/>
-                                {this.props.busId !== null? 'Longitude: '+this.props.buses[this.props.busId]['currentLongitude'] : ''} <br/>
+                                {this.props.busId !== null? 'Average Velocity: '+this.props.buses[this.props.busId]['avgVelocity'] : ''} <br/>
                                 {!!this.props.driver ? this.renderDriver(this.props.driver):''}
                                 {!!this.props.teachers ? this.renderTeachers(this.props.teachers):''}
                                 {!!this.props.students ? <h3>Students</h3>:''}                        
                                 {!!this.props.students ? this.renderStudents(this.props.students):''}
                         </td>
-                        <td style={{width:'500px'}}>
+                        <td style={{width:'1000px'}}>
                             <GoogleMapCom
                                 allBusPositions={route}
                                 lat={cenlat}

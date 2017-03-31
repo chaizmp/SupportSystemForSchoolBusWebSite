@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchStudents } from '../actions/index';
+import { fetchStudents, fetchPersons } from '../actions/index';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -9,6 +9,10 @@ class StudentsIndex extends Component {
             .then( ()=> {
                 console.log(this.props.students);
             });
+        this.props.fetchPersons()
+            .then( ()=> {
+                console.log(this.props.persons);
+            });
     }
 
     renderStudents()  {
@@ -17,8 +21,30 @@ class StudentsIndex extends Component {
             <div key={student.id}>
                 <Link style={{textDecoration:'none'}}to={"/student/"+student.id}>
                     {student.firstName} {student.surName}
-                </Link> 
+                </Link>
             </div> );
+        });
+    }
+
+    renderPersons()  {
+        var previousRole = 'HEHE';
+        return this.props.persons.map( (person) => {
+            if(previousRole !== person.role) {
+                previousRole = person.role;
+                return (
+                <div key={person.id}>
+                    <h3> All {person.role}</h3>
+                    <Link style={{textDecoration: 'none'}} to={"/person/" + person.id}>
+                        {person.firstName} {person.surName}
+                    </Link>
+                </div> );
+            }else{
+                return (<div key={person.id}>
+                    <Link style={{textDecoration: 'none'}} to={"/person/" + person.id}>
+                        {person.firstName} {person.surName}
+                    </Link>
+                </div> )
+            }
         });
     }
 
@@ -26,7 +52,8 @@ class StudentsIndex extends Component {
         return (
             <div style={{textAlign: 'center'}}>
                 <h3> All Students</h3>
-                    {this.renderStudents()} 
+                    {this.renderStudents()}
+                    {this.renderPersons()}
                 <br/><button><Link style={{textDecoration:'none'}} to="/allBus">&nbsp; All Bus &nbsp;</Link></button>
             </div>
         );
@@ -34,7 +61,7 @@ class StudentsIndex extends Component {
 }
 
 function mapStateToProps(state){
-    return {students: state.students.all};
+    return {students: state.students.all, persons: state.students.persons};
 }
 
-export default connect(mapStateToProps, { fetchStudents })(StudentsIndex);
+export default connect(mapStateToProps, { fetchStudents, fetchPersons })(StudentsIndex);

@@ -6,6 +6,7 @@ import BusReducer from './reducer_bus';
 import RouteReducer from './reducer_route';
 import MemberReducer from './reducer_member';
 import RelationshipReducer from './reducer_relationship';
+import PersonReducer from './reducer_persons';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     route: RouteReducer,
     formResult: MemberReducer,
     relationship: RelationshipReducer,
-    form: formReducer
+    form: formReducer,
+    persons: PersonReducer
 });
 
 export default rootReducer;

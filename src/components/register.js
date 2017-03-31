@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { reduxForm } from 'redux-form';
+import { reduxForm, Field} from 'redux-form';
 import { signUp} from '../actions/index';
 import { Link } from 'react-router';
+
 var type;
 class Register extends Component {
 
@@ -21,7 +22,7 @@ class Register extends Component {
                 // We navigate by calling this.context.router.push with the
                 // new patch to navigate to.
                 console.log(this.props.result);
-                if(this.props.result.role === 'SCHOOLOFFICER'){
+                if(this.props.result === 'true'){
                     this.context.router.push('/index');
                 }else{
                     this.context.router.push('/register');
@@ -30,7 +31,7 @@ class Register extends Component {
     }
 
     render() {
-        const { fields: {username, password, role, typeOfService, name, surname, tel, studentId}, handleSubmit } = this.props;
+        var { fields: {username, password, role, typeOfService, name, surname, tel, detail, studentId, img}, handleSubmit } = this.props;
         //equivalent to const title = this.props.fields.title;
         return (
             // to validate the form when the user tries to submit
@@ -46,10 +47,10 @@ class Register extends Component {
                         {/*<label><Field name="sex" component={input} type="radio" value="female"/> Female</label>*/}
                     {/*</div>*/}
                     <label>Role</label><br/>
-                    <label><input type="radio" name="role" value="PARENT" className="form-control" {...role} onClick={ this.show1} /> Parent</label>
-                    <label><input type="radio" name="role" value="TEACHER" className="form-control" {...role} onClick={this.show1 } /> Teacher </label>
-                    <label><input type="radio" name="role" value="DRIVER" className="form-control" {...role} onClick={ this.show1 }/> Driver</label>
-                    <label><input type="radio" name="role" value="STUDENT" className="form-control" {...role} onClick={ this.show2 }/> Student</label>
+                    <label><input type="radio" name="role" {...role}   value="PARENT" className="form-control" onClick={ this.show1} /> Parent</label>
+                    <label><input type="radio" name="role" {...role}   value="TEACHER" className="form-control" onClick={this.show1 } /> Teacher </label>
+                    <label><input type="radio" name="role" {...role}   value="DRIVER" className="form-control" onClick={ this.show1 }/> Driver</label>
+                    <label><input type="radio" name="role" {...role}   value="STUDENT" className="form-control" onClick={ this.show2 }/> Student</label>
                     <div className="text-help">
                         { role.touched ? role.error : '' }
                     </div>
@@ -58,12 +59,12 @@ class Register extends Component {
                         <div
                             className={`form-group ${typeOfService.touched && typeOfService.invalid ? 'has-danger' : '' }` }>
                             <label>Type of Service</label><br/>
-                            <label><input type="radio" name="typeOfService" value="GO"
-                                          className="form-control" {...typeOfService} /> Go</label>
-                            <label><input type="radio" name="typeOfService" value="BACK"
-                                          className="form-control" {...typeOfService} /> Back</label>
-                            <label><input type="radio" name="typeOfService" value="BOTH"
-                                          className="form-control" {...typeOfService} /> Both</label>
+                            <label><input type="radio" name="typeOfService" {...typeOfService} value="GO"
+                                          className="form-control" /> Go</label>
+                            <label><input type="radio" name="typeOfService" {...typeOfService} value="BACK"
+                                          className="form-control"  /> Back</label>
+                            <label><input type="radio" name="typeOfService" {...typeOfService} value="BOTH"
+                                          className="form-control" /> Both</label>
                             <div className="text-help">
                                 { typeOfService.touched ? typeOfService.error : '' }
                             </div>
@@ -114,8 +115,26 @@ class Register extends Component {
                         { tel.touched ? tel.error : '' }
                     </div>
                 </div>
+
+                <div className={`form-group ${detail.touched && detail.invalid ? 'has-danger' : '' }` }>
+                    <label>Address</label>
+                    <input type="text" className="form-control" {...detail} />
+                    <div className="text-help">
+                        { detail.touched ? detail.error : '' }
+                    </div>
+                </div>
+
+                <div  className={`form-group ${img.touched && img.invalid ? 'has-danger' : '' }` }>
+                    <label>Upload Image</label>
+                    <input type="file" accept="image/*" className="form-control" {...img}  />
+
+                    <div className="text-help">
+                        { img.touched ? img.error : '' }
+                    </div>
+                </div>
+
                 <button type="submit">Sign Up!</button>
-                <button> <Link to="/"> Cancel </Link></button>
+                <button> <Link style={{textDecoration:'none'}} to="/"> Cancel </Link></button>
             </form>
         );
 
@@ -137,7 +156,8 @@ class Register extends Component {
 }
 
 function validate(values) {
-    const errors = {};
+    var errors = {};
+    console.log(values);
     if(!values.username && type === 1) {
         errors.username = 'Enter Username';
     }
@@ -162,6 +182,29 @@ function validate(values) {
     if (!values.studentId && type !==1) {
         errors.studentId= 'Enter Student ID';
     }
+    if (!values.detail) {
+        errors.detail = 'Fill Address';
+    }
+    if (!values.img) {
+        console.log("### NO PIC");
+        errors.img = 'Upload image';
+    }
+    else{
+        if(values.img.length !== 0){
+            console.log("########");
+            console.log(values.img.length);
+            if(!(values.img[0].name.endsWith('.jpg') || values.img[0].name.endsWith('.png') || values.img[0].name.endsWith('.jpeg'))){
+                errors.img = 'Invalid Image Format';
+            }
+        }
+    }
+    // if(! (values.img === undefined)){
+    //     errors.img = 'Only an image can be uploaded.';
+
+    //     // if(values.img[0].type !== "application/png"){
+    //     //     errors.img = 'Only an image can be uploaded';
+    //     // }
+    // }
     //error must have key match the field name
     return errors;
 }
@@ -178,6 +221,6 @@ function mapStateToProps(state){
 
 export default reduxForm({
     form: 'Register', // this is a unique token
-    fields: ['username', 'password', 'role', 'typeOfService', 'name', 'surname', 'tel', 'studentId'],
+    fields: ['username', 'password', 'role', 'typeOfService', 'name', 'surname', 'tel', 'detail', 'studentId', 'img'],
     validate
 }, mapStateToProps, { signUp })(Register);
