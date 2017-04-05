@@ -49,10 +49,8 @@ class Login extends Component {
                   </div>
               </div>
 
-              <button style={{cursor: 'pointer' }} type="submit" > Submit!</button><br/>
-              <button> <Link style={{textDecoration:'none'}} to="/register"> Sign Up </Link></button>
-              <button> <Link style={{textDecoration:'none'}} to="/"> Cancel </Link></button><br/>
-              <button> <Link style={{textDecoration:'none'}} to="/relationship"> Add Relationship </Link></button>
+              <button style={{cursor: 'pointer' }} type="submit" > Sign In</button><br/>
+
           </form>
         );
     } // they are managed by redux. only you should do is tell what to do when they are updated

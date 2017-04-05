@@ -1,36 +1,88 @@
-import React, { Component, PropTypes } from 'react';
-import { reduxForm, Field} from 'redux-form';
-import { signUp} from '../actions/index';
-import { Link } from 'react-router';
+import React, { Component, PropTypes} from 'react';
+import { reduxForm} from 'redux-form';
+import { signUp } from '../actions/index';
+import  { Link, Router } from 'react-router';
+import axios from 'axios';
+import { ROOT_URL } from '../actions/index';
 
 var type;
+var status = false;
 class Register extends Component {
+
+    static contextTypes = {
+        router: PropTypes.object
+    };
 
     componentDidMount(){
         this.show0();
         type = 0;
     }
 
-    static contextTypes = {
-        router: PropTypes.object
-    };
+    onSubmit(props) {
+        let querystring = require('querystring');
+        let path = props.role !== 'STUDENT' ? 'signUp' : 'addStudent';
+        console.log(props);
+        var reader = new FileReader();
+        var imgResult;
+        reader.readAsDataURL(props.img[0]);
+        return reader.onload = ()=> {
+            imgResult = reader.result.substring(reader.result.indexOf(",") + 1);
+            let queryParam = {
+                username: props.username,
+                password: props.password,
+                role: props.role,
+                name: props.name,
+                surname: props.surname,
+                tel: props.tel,
+                typeOfService: !!props.typeOfService ? props.typeOfService : '',
+                studentId: !!props.studentId ? props.studentId : '',
+                image: imgResult,
+                details: props.detail
+            }
 
-    onSubmit(props){
-        this.props.signUp(props)
-            .then(() => {
-                //blog post has been created, navigate the user to the index
-                // We navigate by calling this.context.router.push with the
-                // new patch to navigate to.
-                console.log(this.props.result);
-                if(this.props.result === 'true'){
-                    this.context.router.push('/index');
-                }else{
-                    this.context.router.push('/register');
-                }
-            });
+            axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
+                queryParam))
+                .then(function (response) {
+                    console.log(response.data);
+                    status = response.data;
+                    //console.log(this.props.result);
+                    if (response.data == true) {
+                        // var transitionTo = Router.transitionTo;
+                        // transitionTo('/index');
+                        window.alert("Registration Complete");
+                        window.location.href = 'http://localhost:3000/index';
+                        //this.context.router.push('/index').bind(this);
+                    } else {
+                        window.alert("Registration Failed");
+                        //this.context.router.push('/register').bind(this);
+                    }
+                })
+            // console.log(queryParam);
+            // return {
+            //     type: SIGN_UP,
+            //     payload: request
+            // };
+
+            // this.props.signUp(props)
+            //     .then(() => {
+            //         //blog post has been created, navigate the user to the index
+            //         // We navigate by calling this.context.router.push with the
+            //         // new patch to navigate to.
+            //         console.log(this.props.result);
+            //         if (this.props.result === 'true') {
+            //             this.context.router.push('/index');
+            //         } else {
+            //             this.context.router.push('/register');
+            //         }
+            //     });
+        }
+
     }
 
     render() {
+        // if(status == true) {
+        //     this.context.router.push('/index');
+        // }
         var { fields: {username, password, role, typeOfService, name, surname, tel, detail, studentId, img}, handleSubmit } = this.props;
         //equivalent to const title = this.props.fields.title;
         return (
@@ -38,7 +90,7 @@ class Register extends Component {
             // it
             // can pass an action creator (optionally) when the form is submitted
             <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
-                <h3>Login</h3>
+                <h3>Registration</h3>
                 <div className={`form-group ${role.touched && role.invalid ? 'has-danger' : '' }` }>
 
                     {/*<label>Sex</label>*/}
@@ -126,15 +178,15 @@ class Register extends Component {
 
                 <div  className={`form-group ${img.touched && img.invalid ? 'has-danger' : '' }` }>
                     <label>Upload Image</label>
-                    <input type="file" accept="image/*" className="form-control" {...img}  />
+                    <input style={{cursor: 'pointer' }}  type="file" accept="image/*" className="form-control" {...img}  />
 
                     <div className="text-help">
                         { img.touched ? img.error : '' }
                     </div>
                 </div>
 
-                <button type="submit">Sign Up!</button>
-                <button> <Link style={{textDecoration:'none'}} to="/"> Cancel </Link></button>
+                <button type="submit" style={{cursor: 'pointer' }} >Sign Up!</button>
+                <button> <Link style={{textDecoration:'none'}} to="/index"> Cancel </Link></button>
             </form>
         );
 
@@ -157,7 +209,7 @@ class Register extends Component {
 
 function validate(values) {
     var errors = {};
-    console.log(values);
+    //console.log(values);
     if(!values.username && type === 1) {
         errors.username = 'Enter Username';
     }
@@ -191,8 +243,8 @@ function validate(values) {
     }
     else{
         if(values.img.length !== 0){
-            console.log("########");
-            console.log(values.img.length);
+      //      console.log("########");
+        //    console.log(values.img.length);
             if(!(values.img[0].name.endsWith('.jpg') || values.img[0].name.endsWith('.png') || values.img[0].name.endsWith('.jpeg'))){
                 errors.img = 'Invalid Image Format';
             }
@@ -223,4 +275,4 @@ export default reduxForm({
     form: 'Register', // this is a unique token
     fields: ['username', 'password', 'role', 'typeOfService', 'name', 'surname', 'tel', 'detail', 'studentId', 'img'],
     validate
-}, mapStateToProps, { signUp })(Register);
+}, mapStateToProps, { signUp})(Register);

@@ -37,14 +37,14 @@ class PersonShow extends Component {
         return (
 
             <div>
-                <img style={{border:'ridge'}} alt="Embedded Image" src={src} />
+                <img style={{border:'ridge', width:'300px', height:'300px'}} alt="Embedded Image" src={src} />
                 {person.role === 'TEACHER' ? <h3> Teacher Profile</h3>: ''}
                 {person.role === 'PARENT' ? <h3> Parent Profile</h3>: ''}
                 {person.role === 'DRIVER' ? <h3> Driver Profile</h3>: ''}
                     Name: {person.firstName}&nbsp;{person.surName}<br/>
                     Tel: {person.tel}<br/>
                     Address: {person.addresses[0]}
-                <button><Link  style={{textDecoration:'none'}} to= "/index" onClick={this.props.deletePerson(this.props.params.id)
+                <br/><button><Link  style={{textDecoration:'none'}} to= "/delete" onClick={() =>{this.props.deletePerson(this.props.params.id);}
                 }>Delete</Link></button>
                 {person.role !== 'DRIVER' ? <h3>Students</h3> :<br/>}
                     {this.renderStudents()}

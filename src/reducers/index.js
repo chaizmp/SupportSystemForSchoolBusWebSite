@@ -7,6 +7,9 @@ import RouteReducer from './reducer_route';
 import MemberReducer from './reducer_member';
 import RelationshipReducer from './reducer_relationship';
 import PersonReducer from './reducer_persons';
+import DeleteReducer from './reducer_delete';
+import BusImageReducer from './reducer_bus_img';
+import BusSpeedReducer from './reducer_bus_speed';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
@@ -18,7 +21,10 @@ const rootReducer = combineReducers({
     formResult: MemberReducer,
     relationship: RelationshipReducer,
     form: formReducer,
-    persons: PersonReducer
+    persons: PersonReducer,
+    deleteResult: DeleteReducer,
+    busImg: BusImageReducer,
+    estimate: BusSpeedReducer
 });
 
 export default rootReducer;

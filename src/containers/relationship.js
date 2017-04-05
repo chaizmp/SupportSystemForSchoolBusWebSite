@@ -23,7 +23,7 @@ class Relationship extends Component {
                 console.log("#####");
                 console.log(this.props.persons);
             });
-        this.props.fetchAllStudents()
+        this.props.fetchAllStudents(-1)
             .then( ()=>{
                 console.log("#####");
                 console.log(this.props.persons);
@@ -38,16 +38,16 @@ class Relationship extends Component {
     showParentDiv(){
         const { fields: {ro, personTId, personPId, personSIds, classroomName }, handleSubmit } = this.props;
         return this.props.persons.allParents.map((parent,i)=>{
-                 return (  <label><input type="radio" name="personsPId" value={parent.id}
-                                  className="form-control" {...personPId} /> {parent.firstName} {parent.surName}</label>
+                 return (  <label><input type="radio" name="personsPId" {...personPId}  value={parent.id}
+                                  className="form-control" /> {parent.firstName} {parent.surName}</label>
                 );});
     }
 
     showTeacherDiv(){
         const { fields: {ro, personTId, personPId, personSIds, classroomName }, handleSubmit } = this.props;
         return this.props.persons.allTeachers.map((teacher,i)=>{
-                    return (  <label><input  type="radio" name="personsTId" value={teacher.id}
-                                          className="form-control" {...personTId} /> {teacher.firstName} {teacher.surName}
+                    return (  <label><input  type="radio" name="personsTId" {...personTId} value={teacher.id}
+                                          className="form-control"  /> {teacher.firstName} {teacher.surName}
                         </label>
                         );});
     }
@@ -55,7 +55,7 @@ class Relationship extends Component {
     renderStudentDiv(){
         const { fields: {ro, personTId, personPId, personSIds, classroomName }, handleSubmit } = this.props;
         return this.props.persons.allStudents.map((student, i) => {
-                return ( <label><input  type="radio" name="personsSIds" value ={student.id}  className="form-control" {...personSIds} /> {student.firstName} {student.surName} </label>
+                return ( <label><input  type="radio" name="personsSIds" {...personSIds} value ={student.id}  className="form-control" /> {student.firstName} {student.surName} </label>
                           );});
     }
 
@@ -89,10 +89,12 @@ class Relationship extends Component {
                 // We navigate by calling this.context.router.push with the
                 // new patch to navigate to.
                 console.log(this.props.result);
-                if(this.props.result.role === 'SCHOOLOFFICER'){
+                if(this.props.result.addRelationshipResult == true){
+                    window.alert('Relationship Completely Added');
                     this.context.router.push('/index');
                 }else{
-                    this.context.router.push('/register');
+                    window.alert('Relationship Already Exists');
+                    this.context.router.push('/relationship');
                 }
             });
     }
@@ -122,8 +124,8 @@ class Relationship extends Component {
                         {/*</div>*/}
                     <div className={`form-group ${ro.touched && ro.invalid ? 'has-danger' : '' }` }>
                         <label>Type</label><br/>
-                        <label><input type="radio" name="ro" value="PARENT" className="form-control" {...ro} onClick={ this.show1} /> Parent</label>
-                        <label><input type="radio" name="ro" value="TEACHER" className="form-control" {...ro} onClick={this.show2 } /> Teacher </label>
+                        <label><input type="radio" name="ro" {...ro} value="PARENT" className="form-control" onClick={ this.show1} /> Parent</label>
+                        <label><input type="radio" name="ro" {...ro} value="TEACHER" className="form-control" onClick={this.show2 } /> Teacher </label>
                         <div className="text-help">
 
 
@@ -162,8 +164,8 @@ class Relationship extends Component {
                             <div className="text-help">{ classroomName.touched ? classroomName.error : '' }</div>
                     </div>
                     </div>
-                    <button type="submit">Sign Up!</button>
-                    <button><Link to="/"> Cancel </Link></button>
+                    <button type="submit"style={{cursor: 'pointer' }} >Add</button>
+                    <button><Link to="/index" style={{textDecoration:'none'}}> Cancel </Link></button>
                 </form>
                 </div>
             );
@@ -179,6 +181,7 @@ class Relationship extends Component {
 /// reduxForm: 1st is form config, 2nd is mapStateToProps, 3rd is mapDispatchToProps
 
 function validate(values) {
+    console.log(values);
     const errors = {};
     if(!values.ro ) {
         errors.ro = 'Select Type';
@@ -205,6 +208,7 @@ function validate(values) {
 //         result: state.formResult
 //     };
 // }
+
 
 Relationship = reduxForm({
     form: 'Relationship', // this is a unique token

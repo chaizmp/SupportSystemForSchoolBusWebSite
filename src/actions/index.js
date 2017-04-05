@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = "http://localhost:8089";
+export const ROOT_URL = "http://localhost:8089";
 
 export const FETCH_STUDENTS = 'FETCH_STUDENTS';
 export const FETCH_STUDENT = 'FETCH_STUDENT';
@@ -21,6 +21,9 @@ export const FETCH_PERSON = 'FETCH_PERSON';
 export const FETCH_STUDENTS_BY_PERSON = 'FETCH_STUDENTS_BY_PERSON';
 export const FETCH_PERSONS = 'FETCH_PERSONS';
 export const DELETE_PERSON = 'DELETE_PERSON';
+export const TRIGGER_DELETE = 'TRIGGER_DELETE';
+export const FETCH_BUS_IMAGES = 'FETCH_BUS_IMAGES';
+export const FETCH_BUS_SPEED = 'FETCH_BUS_SPEED';
 
 export function fetchStudents(id){
     var querystring = require('querystring');
@@ -121,9 +124,7 @@ export function signUp(props) {
     var imgResult;
     reader.readAsDataURL(props.img[0]);
     return reader.onload = function () {
-        console.log(reader.result);
         imgResult = reader.result.substring(reader.result.indexOf(",") + 1);
-
         let queryParam = {
             username: props.username,
             password: props.password,
@@ -136,17 +137,28 @@ export function signUp(props) {
             image: imgResult,
             details: props.detail
         }
-        const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
-            queryParam
-        ));
-        console.log(queryParam);
-        return {
-            type: SIGN_UP,
-            payload: request
-        };
-
+        // const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
+        //     queryParam
+        // ));
+        // console.log(queryParam);
+        // return {
+        //     type: SIGN_UP,
+        //     payload: request
+        // };
+        return signUpPost(queryParam, path);
     }
 
+}
+
+export function signUpPost(props, path){
+    let querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/${path}`, querystring.stringify(
+        props
+    ));
+    return {
+        type: SIGN_UP,
+        payload: request
+    };
 }
 
 export function addRelationship(props) {
@@ -194,10 +206,10 @@ export function fetchAllParents(){
     };
 }
 
-export function fetchAllStudents(){
+export function fetchAllStudents(id){
     var querystring = require('querystring');
     const request = axios.post(`${ROOT_URL}/getAllStudentInformation`,querystring.stringify({
-        personId: '16',
+        personId: id,
         needImage: 'false'
     }));
 
@@ -238,6 +250,31 @@ export function deletePerson(id){
     const request = axios.post(`${ROOT_URL}/deletePerson`,querystring.stringify({ personId: id}));
     return {
         type: DELETE_PERSON,
+        payload: request
+    };
+}
+
+export function triggerDelete(){
+    return {
+        type: TRIGGER_DELETE,
+        payload: false
+    };
+}
+
+export function fetchBusImages(id){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/getImageFromBus`,querystring.stringify({ carId: id}));
+    return {
+        type: FETCH_BUS_IMAGES,
+        payload: request
+    };
+}
+
+export function fetchEstimateTime(id){
+    var querystring = require('querystring');
+    const request = axios.post(`${ROOT_URL}/estimateTime`,querystring.stringify({ personId: id}));
+    return {
+        type: FETCH_BUS_SPEED,
         payload: request
     };
 }

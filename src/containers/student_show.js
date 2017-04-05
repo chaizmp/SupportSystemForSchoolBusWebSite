@@ -52,13 +52,18 @@ class StudentShow extends Component {
         console.log(src);
         return (
             <div>
-                <img style={{border:'ridge'}} alt="Embedded Image" src={src} />
+                <img style={{border:'ridge', width:'300px', height:'300px'}} alt="Embedded Image" src={src} />
                 <h3>Student</h3>
                     Name: {student.firstName}&nbsp;{student.surName}<br/>
                     Tel: {student.tel}<br/>
-                    Type of Service: {student.typeOfService}<br/>
-                    Status: {student.inBus === 'YES' ? "On Bus" : "Left"} <br/>
-                <button><Link  style={{textDecoration:'none'}} to= "/index" onClick={this.props.deletePerson(this.props.params.id)
+                    Type of Service:
+                {student.typeOfService == 'BOTH' ? ' Round Trip':''}
+                {student.typeOfService == 'GO' ? ' One Way Trip (Home to School)':''}
+                {student.typeOfService == 'BACK' ? ' One Way Trip (School to Home)':''}<br/>
+                    Status: {student.inBus === 'YES' ? "On Bus" : ''}
+                {student.inBus === 'NO' ? "Get Off" : ''}
+                {student.inBus === 'TEMP' ? "Visiting" : ''}<br/>
+                <button><Link  style={{textDecoration:'none'}} to= "/delete" onClick={ () =>{this.props.deletePerson(this.props.params.id)}
                 }>Delete</Link></button>
                 <h3>Parent</h3>
                     {this.renderParents()}

@@ -1,6 +1,6 @@
 import { FETCH_BUS, FETCH_BUSES, CLICK_BUS, FETCH_PASSENGERS } from '../actions/index';
 
-const INITIAL_STATE = { bus: null, buses: [], busId: null};
+const INITIAL_STATE = { bus: null, buses: [], busId: null, teachers: [], students:[], driver:[]};
 
 export default function(state = INITIAL_STATE, action){
     switch(action.type){

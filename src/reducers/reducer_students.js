@@ -1,4 +1,4 @@
-import { FETCH_STUDENTS, FETCH_STUDENT, FETCH_PERSONS } from '../actions/index';
+import { FETCH_STUDENTS, FETCH_STUDENT, FETCH_PERSONS, FORCE_UPDATE } from '../actions/index';
 
 const INITIAL_STATE = { all: [], student: null, persons: []}
 
