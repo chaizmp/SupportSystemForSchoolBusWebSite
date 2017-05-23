@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const ROOT_URL = "http://161.246.5.213:8089";
+export const ROOT_URL = "http://161.246.6.101:8089";
 
 export const FETCH_STUDENTS = 'FETCH_STUDENTS';
 export const FETCH_STUDENT = 'FETCH_STUDENT';

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-//import {Link} from 'react-router';
 import { triggerDelete } from '../actions/index';
 import { connect } from 'react-redux'
 class Delete extends Component {
@@ -11,7 +10,6 @@ class Delete extends Component {
             this.props.triggerDelete();
             window.alert("Deletion Complete");
             window.location.href = 'http://localhost:3000/index';
-            //this.context.router.push('/index');
         }
         return (
             <div>Waiting . . .</div>
